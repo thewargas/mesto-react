@@ -21,7 +21,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [card, setCard] = useState({});
 
-  const [currentUser, setСurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
 
   const [isError, setError] = useState({});
   const [messageError, setMessageError] = useState({});
@@ -30,7 +30,7 @@ function App() {
     Promise.all([api.getInitialInfo(), api.getInitialCards()])
 
       .then(([userData, cardsData]) => {
-        setСurrentUser(userData);
+        setCurrentUser(userData);
         setCards(cardsData);
       })
 
@@ -73,9 +73,16 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function handleCardDelete(card) {
@@ -101,7 +108,7 @@ function App() {
     api
       .changeUserInfo(inputs)
       .then((data) => {
-        setСurrentUser(data);
+        setCurrentUser(data);
         closeAllPopups();
       })
       .catch((error) => {
@@ -118,7 +125,7 @@ function App() {
     api
       .changeAvatar(input)
       .then((data) => {
-        setСurrentUser(data);
+        setCurrentUser(data);
       })
       .catch((error) => {
         console.log(error);
