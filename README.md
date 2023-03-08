@@ -60,7 +60,7 @@
 
 ## Ссылки
 
-- Github Pages -
+- Github Pages - https://thewargas.github.io/mesto-react
 - Github - https://github.com/thewargas/mesto
 
 ---
