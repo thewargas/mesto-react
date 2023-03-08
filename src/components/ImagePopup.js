@@ -1,9 +1,12 @@
 import React from "react";
 import closeIcon from "../images/Close-Icon.svg";
 
-function ImagePopup({ card, onClose }) {
+function ImagePopup({ onOverlay, isOpen, card, onClose }) {
   return (
-    <div className={`popup popup_type_image ${card.name && "popup_active"}`}>
+    <div
+      className={`popup popup_type_image ${isOpen && "popup_active"}`}
+      onClick={onOverlay}
+    >
       <figure className="popup__image-container">
         <img className="popup__image" src={card.link} alt={card.name} />
         <figcaption>

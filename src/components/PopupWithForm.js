@@ -1,20 +1,49 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import closeIcon from "../images/Close-Icon.svg";
 
-function PopupWithForm({ isOpen, onClose, name, title, buttonName, children }) {
+function PopupWithForm({
+  onOverlay,
+  isLoading,
+  isOpen,
+  onClose,
+  name,
+  title,
+  buttonName,
+  onSubmit,
+  children,
+  isError,
+}) {
+  const formRef = useRef();
+  const [isValidity, setValidity] = useState(true);
+
+  useEffect(() => {
+    setValidity(formRef.current.checkValidity());
+  }, [isOpen, isError]);
+
   return (
-    <div className={`popup popup_type_${name} ${isOpen && "popup_active"}`}>
+    <div
+      className={`popup popup_type_${name} ${isOpen && "popup_active"}`}
+      onClick={onOverlay}
+    >
       <div className="popup__container">
         <h2 className="popup__title">{title}</h2>
         <form
           className={`popup__form popup__form_type_${name}`}
           action="#"
           name="popup-form-profile"
+          onSubmit={onSubmit}
+          ref={formRef}
           noValidate
         >
           {children}
-          <button type="submit" className="button popup__submit-button">
-            {buttonName}
+          <button
+            disabled={!isValidity}
+            type="submit"
+            className={`button popup__submit-button ${
+              !isValidity && "button_disabled"
+            }`}
+          >
+            {isLoading ? "Сохранение" : buttonName}
           </button>
         </form>
         <button
